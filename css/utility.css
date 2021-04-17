@@ -13,3 +13,7 @@
 .offline-color {
   background-color: var(--gray4);
 }
+
+.accept {
+  background: url("/resource/check-mark.svg");
+}
