@@ -1,0 +1,8 @@
+/*    Button      */
+.btn-primary {
+  background-color: white;
+  border: 1px solid var(--primary);
+  border-radius: 15px;
+  padding: 0.25em 0.5em;
+  font-size: 0.8em;
+}

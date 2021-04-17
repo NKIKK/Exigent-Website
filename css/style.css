@@ -10,13 +10,15 @@
   --green-light: #a9d79d;
   --primary: #56ccf2;
   --primary-light: #cfe8ee;
+  --gray4: #bdbdbd;
+  --gray5: #e0e0e0;
 }
 body {
   background: linear-gradient(180deg, #cfe8ee 0%, #ffffff 100%);
   height: 100vh;
 }
 #container {
-  width: 80%;
+  width: 90%;
   margin: auto;
 }
 
@@ -34,25 +36,17 @@ body {
   padding: 1.25em;
 }
 
-/*    Button      */
-.btn-primary {
-  background-color: white;
-  border: 1px solid var(--primary);
-  border-radius: 15px;
-  padding: 0.25em 0.75em;
-}
-
 /*                   Flex                    */
 
 #content {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-columns: 1.2fr 1fr 2fr;
   grid-gap: 30px;
 }
 .item-grid {
   background-color: white;
   border-radius: 10px;
-  padding: 2em;
+  padding: 1em;
 }
 
 /*      Record       */
@@ -66,17 +60,30 @@ body {
 #recorded-list {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .recorded {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid var(--gray5);
 }
 
 .player {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+.play-button {
+  width: 25px;
+  height: 25px;
+}
+.name-recorded {
+  width: 100%;
 }
 
 /*      Online       */
