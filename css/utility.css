@@ -6,3 +6,10 @@
   padding: 0.25em 0.5em;
   font-size: 0.8em;
 }
+
+.online-color {
+  background-color: var(--green-light);
+}
+.offline-color {
+  background-color: var(--gray4);
+}

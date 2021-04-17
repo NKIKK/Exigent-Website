@@ -21,6 +21,11 @@ body {
   width: 90%;
   margin: auto;
 }
+.label {
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 0.7em;
+}
 
 /*      Icon       */
 .icon {
@@ -87,14 +92,20 @@ body {
 }
 
 /*      Online       */
-#online {
-  display: flex;
-  padding: 2em;
-  background-color: white;
-  border-radius: 10px;
-}
 
-#label {
+#online-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.online-icon {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.online-row {
   display: flex;
   flex-direction: row;
+  gap: 10px;
+  align-items: center;
 }
