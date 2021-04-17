@@ -17,16 +17,24 @@
 body {
   background: linear-gradient(180deg, #cfe8ee 0%, #ffffff 100%);
   height: 100vh;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 #container {
   width: 90%;
   margin: auto;
 }
+.logo {
+  font-family: "Saira Semi Condensed", sans-serif;
+  color: var(--red-light);
+}
+.logo span {
+  color: var(--green-primary);
+}
 .label {
   font-size: 1.5em;
   text-align: center;
   margin-bottom: 0.7em;
+  font-family: "Saira Semi Condensed", sans-serif;
 }
 
 /*      Icon       */
