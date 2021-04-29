@@ -1,0 +1,39 @@
+body {
+  font-size: 14px;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#topic {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+.topic {
+  margin: 0 0.2em;
+  padding: 0.4em 0.7em;
+  background-color: var(--gray4);
+  border-radius: 10px 10px 0 0;
+}
+.topic.current {
+  background-color: white;
+}
+#record,
+#online,
+#status {
+  display: none;
+  min-width: 200px;
+}
+.label {
+  display: none;
+}
+.current {
+  display: flex !important;
+}
+#content {
+  gap: 0;
+}

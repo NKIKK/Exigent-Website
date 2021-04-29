@@ -19,15 +19,21 @@ body {
   height: 100vh;
   font-family: "Roboto", sans-serif;
 }
-#container {
-  width: 90%;
+.container {
+  width: 95%;
   margin: auto;
+  max-width: 1200px;
 }
-.logo {
+nav {
+  margin: 1em 0;
+}
+#logo {
   font-family: "Saira Semi Condensed", sans-serif;
   color: var(--red-light);
+  text-align: center;
+  font-size: 2em;
 }
-.logo span {
+#logo span {
   color: var(--green-primary);
 }
 .label {
@@ -64,6 +70,11 @@ body {
   padding: 1em;
 }
 
+/*      Topic        */
+#topic {
+  display: none;
+}
+
 /*      Record       */
 #record {
   display: flex;
@@ -71,11 +82,15 @@ body {
   align-items: center;
   flex-direction: column;
 }
-
+.text-microphone {
+  padding: 0 0.5em;
+  color: var(--gray3);
+}
 #recorded-list {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: 1em;
 }
 
 .recorded {
@@ -102,7 +117,13 @@ body {
 }
 
 /*      Online       */
-
+#online {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  padding: 2em;
+}
 #online-list {
   display: flex;
   flex-direction: column;
@@ -121,6 +142,12 @@ body {
 }
 
 /* Status */
+#status {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
 .table-label {
   font-weight: bold;
 }

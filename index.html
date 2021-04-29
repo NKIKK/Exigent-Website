@@ -11,17 +11,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/utility.css">
+    <link rel="stylesheet" media="screen and (max-width: 768px)" href="css/mobile.css">
   </head>
   <body>
-    <div id="container">
-      <div id="nav">
-        <h1 class="logo">
+    <div class="container">
+      <nav>
+        <h1 id="logo">
           <span>Exi</span>gent</h1>
 
-      </div>
+      </nav>
       <div id="content">
+
+                                        <!-- Topic -->
+      <section id="topic">
+        <div class="topic current">Record</div>
+        <div class="topic">Online</div>
+        <div class="topic">Status</div>
+      </section>
+
                                         <!-- Record -->
-      <div id="record" class="item-grid">
+      <section id="record" class="item-grid current">
         <div >
           <img src="/resource/microphone.svg" alt="" id="microphone">
         </div>
@@ -53,9 +62,9 @@
           
         </div>
 
-      </div>
+      </section>
                                             <!-- Online List -->
-      <div id="online" class="item-grid">
+      <section id="online" class="item-grid">
         <div class="label">
             Online
         </div>
@@ -77,10 +86,10 @@
             <div class="online-name">Lelouch vi Britannia</div>
           </div>
         </div>
-      </div>
+      </section>
 
                                             <!-- Status -->
-      <div id="status" class="item-grid">
+      <section id="status" class="item-grid">
           <div class="label">Status</div>
           <div class="status-table">
 
@@ -124,7 +133,7 @@
               </div>
             </div>
           </div>
-      </div>
+      </section>
 
 
     </div>
