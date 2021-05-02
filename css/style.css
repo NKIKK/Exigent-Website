@@ -13,6 +13,8 @@
   --gray4: #bdbdbd;
   --gray5: #e0e0e0;
   --gray3: #828282;
+  --dark-primary: #51bbdd;
+  --red-dark: #e76767;
 }
 body {
   background: linear-gradient(180deg, #cfe8ee 0%, #ffffff 100%);
@@ -32,12 +34,14 @@ nav {
   color: var(--red-light);
   text-align: center;
   font-size: 2em;
+  font-weight: bold;
 }
 #logo span {
   color: var(--green-primary);
 }
 .label {
-  font-size: 1.5em;
+  font-size: 1.3em;
+  /* font-weight: bold; */
   text-align: center;
   margin-bottom: 0.7em;
   font-family: "Saira Semi Condensed", sans-serif;
@@ -55,6 +59,10 @@ nav {
   background-color: var(--primary);
   border-radius: 50%;
   padding: 1.25em;
+  cursor: pointer;
+}
+#microphone:hover {
+  background-color: var(--dark-primary);
 }
 
 /*                   Flex                    */
@@ -85,6 +93,7 @@ nav {
 .text-microphone {
   padding: 0 0.5em;
   color: var(--gray3);
+  text-align: center;
 }
 #recorded-list {
   display: flex;
@@ -122,7 +131,7 @@ nav {
   flex-direction: column;
   align-items: center;
   justify-items: center;
-  padding: 2em;
+  /* padding: 2em; */
 }
 #online-list {
   display: flex;
@@ -180,4 +189,70 @@ nav {
 .response-icon {
   width: 25px;
   height: 25px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.35);
+  /* filter: blur(10px); */
+}
+
+/* popup */
+.popup {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  width: 350px;
+  background-color: white;
+  padding: 2em;
+  border-radius: 5px;
+  gap: 15px;
+  margin: 10% auto 0 auto;
+}
+.buttons {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 90%;
+}
+
+/* check name */
+#popupName #recordName {
+  width: 200px;
+  font-size: 1em;
+  padding: 0.2em 0.5em;
+}
+
+/* Send to */
+.listPeopleItem:first-child {
+  border-top: 1px solid var(--gray4);
+}
+.listPeopleItem {
+  border-bottom: 1px solid var(--gray4);
+  padding: 0.6em 0.4em;
+}
+#inputDate,
+#inputTime {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  margin-left: 2em;
+  gap: 10px;
+}
+#inputTime {
+  margin-top: 0.8em;
+}
+#popupSend .player {
+  align-self: flex-start;
+  margin-left: 2em;
 }

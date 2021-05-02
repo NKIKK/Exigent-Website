@@ -1,12 +1,27 @@
 /*    Button      */
-.btn-primary {
+button {
   background-color: white;
   border: 1px solid var(--primary);
-  border-radius: 10px;
-  padding: 0.4em 0.5em;
+  border-radius: 5px;
+  padding: 0.5em 0.9em;
   font-size: 0.8em;
+  cursor: pointer;
 }
-
+button:hover {
+  background-color: var(--primary-light);
+}
+.btn-red {
+  background-color: var(--red-light);
+  border: none;
+  color: white;
+}
+.btn-red:hover {
+  background-color: var(--red-dark);
+}
+.btn-blue {
+  background-color: var(--primary);
+  color: white;
+}
 .online-color {
   background-color: var(--green-light);
 }

@@ -11,7 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/utility.css">
-    <link rel="stylesheet" media="screen and (max-width: 768px)" href="css/mobile.css">
+    <link rel="stylesheet" media="screen and (max-width: 900px)" href="css/mobile.css">
+    <script src="main.js"></script>
   </head>
   <body>
     <div class="container">
@@ -43,21 +44,21 @@
               <img src="/resource/play-button.svg" alt="" class="icon play-button">
               <div class="name-recorded">Name</div>
             </div>
-            <div class="btn-primary">Send</div>
+            <button class="btn-primary modalBtn">Send</button>
           </div>
           <div class="recorded">
             <div class="player">
               <img src="/resource/play-button.svg" alt="" class="icon play-button">
               <div class="name-recorded">Name</div>
             </div>
-            <div class="btn-primary">Send</div>
+            <button class="btn-primary">Send</button>
           </div>
           <div class="recorded">
             <div class="player">
               <img src="/resource/play-button.svg" alt="" class="icon play-button">
               <div class="name-recorded">Name</div>
             </div>
-            <div class="btn-primary">Send</div>
+            <button class="btn-primary">Send</button>
           </div>
           
         </div>
@@ -138,6 +139,56 @@
 
     </div>
   </div>
-  
+  <!-- popup -->
+
+
+  <div class="modal"style="display: none;">
+    <!-- popup check name -->
+    <div id="popupName" class="popup" >
+      <div class="label">
+        Record Name
+      </div>
+      <div class="player">
+        <img src="/resource/play-button.svg" alt="" class="icon play-button">
+        <input class="name-recorded" type="text" placeholder="Name" maxlength="20" name="recondName" id="recordName"></input>
+      </div>
+      <div class="buttons">
+        <button class="btn-red">Cancel</button>
+        <button>OK</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal">
+    <div id="popupSend" class="popup">
+      <div class="label">
+        Send to..
+      </div>
+      <div class="player">
+        <img src="/resource/play-button.svg" alt="" class="icon play-button">
+        <div class="name-recorded">Name</div>
+      </div>
+      <div id="listPeople">
+        <div class="listPeopleItem">Lelouch vi Britannaia</div>
+        <div class="listPeopleItem">คริสทีน่า</div>
+        <div class="listPeopleItem">นิสิต1</div>
+        <div class="listPeopleItem">นิสิต2</div>
+      </div>
+      <div id="inputTime">
+        <label for="time">Time</label>
+        <input type="time" id="time" name="time">
+      </div>
+      <div id="inputDate">
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date">
+      </div>
+      <div class="buttons">
+        <button class="btn-red closeBtn">Cancel</button>
+        <button>Save & Send</button>
+        <button class="btn-blue">Send</button>
+      </div>
+    </div>
+
+  </div>
 </body>
 </html>

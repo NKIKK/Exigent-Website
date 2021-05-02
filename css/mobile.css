@@ -18,6 +18,10 @@ body {
   padding: 0.4em 0.7em;
   background-color: var(--gray4);
   border-radius: 10px 10px 0 0;
+  cursor: pointer;
+}
+.topic:hover {
+  background-color: var(--gray5);
 }
 .topic.current {
   background-color: white;
@@ -28,7 +32,9 @@ body {
   display: none;
   min-width: 200px;
 }
-.label {
+#record.label,
+#online.label,
+#status.label {
   display: none;
 }
 .current {
@@ -36,4 +42,8 @@ body {
 }
 #content {
   gap: 0;
+}
+
+.popup {
+  width: 300px;
 }
