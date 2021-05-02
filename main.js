@@ -1,46 +1,102 @@
-const modalBtn = document.querySelectorAll('.modalBtn');
-const closeBtn = document.querySelectorAll('.closeBtn');
-const microphone = document.querySelector('#microphone');
-const modalName = document.querySelector('#popupName');
-const modalSend = document.querySelector('#popupSend');
-// modalBtn.addEventListener('click',openModal);
-// function openModal(){
-//   modal.style.display = "block";
-// }
+const colorVariable = {
+  greenPrimary: "#67bdb3",
+  redLight: "#f36a6a",
+  light: "#f4f4f4",
+  greenLight: "#a9d79d",
+  primary: "#56ccf2",
+  primaryLight: "#cfe8ee",
+  gray4: "#bdbdbd",
+  gray5: "#e0e0e0",
+  gray3: "#828282",
+  darkPrimary: "#51bbdd",
+  redDark: "#e76767",
+  convertRGBtoHex: function rgb2hex(orig) {
+    var rgb = orig.replace(/\s/g, "").match(/^rgba?\((\d+),(\d+),(\d+)/i);
+    return rgb && rgb.length === 4
+      ? "#" +
+          ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+          ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+          ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2)
+      : orig;
+  },
+};
 
-// closeBtn.addEventListener('click',closeModal);
-// function closeModal(){
-//   modal.style.display="none";
-// }
-modalBtn.forEach(e => {
-  e.addEventListener('click',function (){
-      if(e.classList.contains('modalSendBtn'))
-      {
-        modalSend.style.display = "block";
+const UIController = (function () {
+  const UISelector = {
+    microphone: "#microphone",
+    modalBtn: ".modalBtn",
+    closeBtn: ".closeBtn",
+    microphone: "#microphone",
+    modalName: "#popupName",
+    modalSend: "#popupSend",
+  };
 
+  function toggleMic() {
+    const mic = document.querySelector(UISelector.microphone);
+    if (
+      colorVariable.convertRGBtoHex(mic.style.backgroundColor) !==
+      colorVariable.redLight
+    ) {
+      mic.style.backgroundColor = colorVariable.redLight;
+      return;
+    }
+    mic.style.backgroundColor = colorVariable.primary;
+  }
+
+  function openModal(modalReference) {
+    document.querySelector(UISelector[modalReference]).style.display = "block";
+  }
+
+  function closeModals() {
+    document.querySelector(UISelector.modalName).style.display = "none";
+    document.querySelector(UISelector.modalSend).style.display = "none";
+  }
+
+  return {
+    toggleMic,
+    openModal,
+    closeModals,
+  };
+})();
+
+const BtnController = (function () {
+  const modalBtn = document.querySelectorAll(".modalBtn");
+  modalBtn.forEach((e) => {
+    e.addEventListener("click", function () {
+      if (e.classList.contains("modalSendBtn")) {
+        UIController.openModal("modalSend");
+      } else if (e.classList.contains("modalName")) {
+        UIController.openModal("modalName");
+      } else if (e.classList.contains("closeBtn")) {
+        UIController.closeModals();
       }
-      else if(e.classList.contains('modalName'))
-      {
-        modalName.style.display="block";
+    });
+  });
 
+  const sendBtn = document.querySelectorAll(".sendBtn");
+  sendBtn.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const t = document.querySelector("#time").value;
+      const d = document.querySelector("#date").value;
+
+      if (!ValidityController.isValidTime(`${t} ${d}`)) {
+        // Error
+        return;
       }
-      else if(e.classList.contains('closeNameBtn'))
-      {
-        modalName.style.display="none";
+      UIController.closeModals();
+      // Send Response
+    });
+  });
+})();
 
-      }
-      else if(e.classList.contains('closeSendBtn'))
-      {
-        modalSend.style.display="none";
+const ValidityController = (function () {
+  function isValidTime(time) {
+    const inputTime = new Date(time);
 
-      }// else if(e.classList.contains('idle'))
-      // {
-      //   microphone.classList.replace('idle','recording');
-      //   microphone.nextSibling.textContent="Recording\.\.\.
-      //   click again to finish";
-      // }
-     });
-});
+    return inputTime > Date.now();
+  }
 
-
-console.log(modalName);
+  return {
+    isValidTime,
+  };
+})();
