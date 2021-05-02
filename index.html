@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/utility.css">
     <link rel="stylesheet" media="screen and (max-width: 900px)" href="css/mobile.css">
-    <script src="main.js"></script>
+    <script src="main.js" defer></script>
   </head>
   <body>
     <div class="container">
@@ -33,7 +33,7 @@
                                         <!-- Record -->
       <section id="record" class="item-grid current">
         <div >
-          <img src="/resource/microphone.svg" alt="" id="microphone">
+          <img src="/resource/microphone.svg" alt="" id="microphone" class="modalBtn idle">
         </div>
         <div class="text-microphone">
           click the button to start a new record
@@ -44,21 +44,21 @@
               <img src="/resource/play-button.svg" alt="" class="icon play-button">
               <div class="name-recorded">Name</div>
             </div>
-            <button class="btn-primary modalBtn">Send</button>
+            <button class="btn-primary modalSendBtn modalBtn">Send</button>
           </div>
           <div class="recorded">
             <div class="player">
               <img src="/resource/play-button.svg" alt="" class="icon play-button">
               <div class="name-recorded">Name</div>
             </div>
-            <button class="btn-primary">Send</button>
+            <button class="btn-primary modalSendBtn modalBtn">Send</button>
           </div>
           <div class="recorded">
             <div class="player">
               <img src="/resource/play-button.svg" alt="" class="icon play-button">
               <div class="name-recorded">Name</div>
             </div>
-            <button class="btn-primary">Send</button>
+            <button class="btn-primary modalSendBtn modalBtn" >Send</button>
           </div>
           
         </div>
@@ -142,9 +142,9 @@
   <!-- popup -->
 
 
-  <div class="modal"style="display: none;">
+  <div class="modal" id="popupName">
     <!-- popup check name -->
-    <div id="popupName" class="popup" >
+    <div  class="popup" >
       <div class="label">
         Record Name
       </div>
@@ -153,14 +153,14 @@
         <input class="name-recorded" type="text" placeholder="Name" maxlength="20" name="recondName" id="recordName"></input>
       </div>
       <div class="buttons">
-        <button class="btn-red">Cancel</button>
-        <button>OK</button>
+        <button class="btn-red closeNameBtn modalBtn">Cancel</button>
+        <button class="modalBtn modalSendBtn">OK</button>
       </div>
     </div>
   </div>
 
-  <div class="modal">
-    <div id="popupSend" class="popup">
+  <div class="modal" id="popupSend">
+    <div  class="popup">
       <div class="label">
         Send to..
       </div>
@@ -183,7 +183,7 @@
         <input type="date" id="date" name="date">
       </div>
       <div class="buttons">
-        <button class="btn-red closeBtn">Cancel</button>
+        <button class="btn-red closeSendBtn modalBtn">Cancel</button>
         <button>Save & Send</button>
         <button class="btn-blue">Send</button>
       </div>
