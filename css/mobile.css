@@ -30,7 +30,7 @@ body {
 #online,
 #status {
   display: none;
-  min-width: 200px;
+  min-width: 230px;
 }
 #record.label,
 #online.label,
