@@ -29,29 +29,49 @@ const UIController = (function () {
     microphone: "#microphone",
     modalName: "#popupName",
     modalSend: "#popupSend",
+    textMicrophone: "#text-microphone"
   };
-
+  
+  const mic = document.querySelector(UISelector.microphone);
+  const textMicrophone = document.querySelector(UISelector.textMicrophone);
+  
   function toggleMic() {
-    const mic = document.querySelector(UISelector.microphone);
     if (
-      colorVariable.convertRGBtoHex(mic.style.backgroundColor) !==
-      colorVariable.redLight
-    ) {
-      mic.style.backgroundColor = colorVariable.redLight;
-      return;
+      colorVariable.convertRGBtoHex(mic.style.backgroundColor) ===
+      colorVariable.primary
+      ) {
+        recording();
+        return;
+      }else if(colorVariable.convertRGBtoHex(mic.style.backgroundColor) ===
+      colorVariable.redLight)
+      {
+        openModal("modalName");
+        return;
+      }
+      idle();
     }
-    mic.style.backgroundColor = colorVariable.primary;
-  }
-
+    function idle()
+    {
+      mic.style.backgroundColor = colorVariable.primary;
+      textMicrophone.innerHTML = "Click the button<br>to start a new record";
+    }
+    function recording(){
+      mic.style.backgroundColor = colorVariable.redLight;
+      textMicrophone.innerHTML = "Recording\.\.\.<br>click again to finish";
+      
+    }
   function openModal(modalReference) {
-    document.querySelector(UISelector[modalReference]).style.display = "block";
+      document.querySelector(UISelector[modalReference]).style.display = "block";
   }
-
+  
   function closeModals() {
     document.querySelector(UISelector.modalName).style.display = "none";
     document.querySelector(UISelector.modalSend).style.display = "none";
+    resetState();
   }
-
+  function resetState(){
+    idle();
+  }
   return {
     toggleMic,
     openModal,
@@ -87,6 +107,13 @@ const BtnController = (function () {
       // Send Response
     });
   });
+
+  const microphone = document.querySelector("#microphone");
+  microphone.addEventListener("click",function(){
+    console.log("click microphone");
+    UIController.toggleMic();
+  });
+  console.log(microphone);
 })();
 
 const ValidityController = (function () {
@@ -95,8 +122,8 @@ const ValidityController = (function () {
 
     return inputTime > Date.now();
   }
-
   return {
     isValidTime,
   };
 })();
+

@@ -90,7 +90,7 @@ nav {
   align-items: center;
   flex-direction: column;
 }
-.text-microphone {
+#text-microphone {
   padding: 0 0.5em;
   color: var(--gray3);
   text-align: center;
@@ -239,7 +239,7 @@ nav {
 }
 .listPeopleItem {
   border-bottom: 1px solid var(--gray4);
-  padding: 0.6em 0.4em;
+  width: 200px;
 }
 #inputDate,
 #inputTime {
@@ -255,4 +255,15 @@ nav {
 #popupSend .player {
   align-self: flex-start;
   margin-left: 2em;
+}
+#listPeople .listPeopleItem input {
+  /* display: none; */
+}
+#listPeople .listPeopleItem input:checked ~ label {
+  background-color: var(--green-light);
+}
+#listPeople .listPeopleItem label {
+  width: 200%;
+  height: 100%;
+  /* padding: 0.6em 0.4em; */
 }
