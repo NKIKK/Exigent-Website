@@ -30,7 +30,10 @@ const UIController = (function () {
     modalName: "#popupName",
     modalSend: "#popupSend",
     textMicrophone: "#text-microphone",
-    listPeopleItem: ".listPeopleItem"
+    listPeopleItem: ".listPeopleItem",
+    playButton: ".play-button",
+    pauseSvg: "/resource/pause.svg",
+    playSvg: "/resource/play-button.svg", 
   };
   
   const mic = document.querySelector(UISelector.microphone);
@@ -50,17 +53,17 @@ const UIController = (function () {
         return;
       }
       idle();
-    }
-    function idle()
-    {
+  }
+  function idle()
+  {
       mic.style.backgroundColor = colorVariable.primary;
       textMicrophone.innerHTML = "Click the button<br>to start a new record";
-    }
-    function recording(){
+  }
+  function recording(){
       mic.style.backgroundColor = colorVariable.redLight;
       textMicrophone.innerHTML = "Recording\.\.\.<br>click again to finish";
       
-    }
+  }
   function openModal(modalReference) {
       document.querySelector(UISelector[modalReference]).style.display = "block";
   }
@@ -78,14 +81,59 @@ const UIController = (function () {
     document.querySelector(UISelector.modalSend).style.display = "none";
     resetState();
   }
+  const msg = document.querySelector("#error-time");
+  function resetMsg()
+  {
+    msg.innerHTML="--- Please pick Time&Date vaild ---";
+    msg.classList.remove("error");
+  }
+  function setMsgErrorTime()
+  {
+    msg.innerHTML="--- Invalid Time&Data ---";
+    msg.classList.add("error");
+  }
+
+  // Play Pause
+  function playSound(e)
+  {
+    e.classList.add("pause");
+    e.src=UISelector.pauseSvg;
+    e.nextElementSibling.play()
+  }
+  function pauseSound(e)
+  {
+    e.classList.remove("pause");
+    e.src=UISelector.playSvg;
+    e.nextElementSibling.pause();
+    
+  }
+  const playButtons= document.querySelectorAll(UISelector.playButton);
+  // console.log(playButtons);
+  function pauseAll(except)
+  {
+    playButtons.forEach((e) => {
+      if(e!=except)
+        pauseSound(e);
+    });
+  }
+
+
+
   function resetState(){
     idle();
     unchecked();
+    resetMsg();
+    pauseAll();
   }
   return {
     toggleMic,
     openModal,
     closeModals,
+    resetMsg,
+    setMsgErrorTime,
+    playSound,
+    pauseSound,
+    pauseAll
   };
 })();
 
@@ -94,8 +142,10 @@ const BtnController = (function () {
   modalBtn.forEach((e) => {
     e.addEventListener("click", function () {
       if (e.classList.contains("modalSendBtn")) {
+        UIController.pauseAll();
         UIController.openModal("modalSend");
       } else if (e.classList.contains("modalName")) {
+        UIController.pauseAll();
         UIController.openModal("modalName");
       } else if (e.classList.contains("closeBtn")) {
         UIController.closeModals();
@@ -111,6 +161,7 @@ const BtnController = (function () {
 
       if (!ValidityController.isValidTime(`${t} ${d}`)) {
         // Error
+        UIController.setMsgErrorTime();
         return;
       }
       UIController.closeModals();
@@ -120,10 +171,28 @@ const BtnController = (function () {
 
   const microphone = document.querySelector("#microphone");
   microphone.addEventListener("click",function(){
-    console.log("click microphone");
+    UIController.pauseAll();
     UIController.toggleMic();
   });
-  console.log(microphone);
+  
+
+
+  // play record
+  const playButtons = document.querySelectorAll(".play-button");
+  playButtons.forEach((e) => {
+    e.addEventListener("click",function (){
+      if(e.classList.contains("pause")===false)
+      {
+        UIController.playSound(e);
+        UIController.pauseAll(e);
+      }else {
+        UIController.pauseSound(e);
+      }
+
+    });
+  });
+
+
 
   const topic = document.querySelectorAll(".topic");
   const record = document.querySelector("#record");
@@ -134,37 +203,36 @@ const BtnController = (function () {
   const statusTopic = document.querySelector("#status-topic");
   
   
-    console.log("mobile");
-    topic.forEach((e)=>{
-      e.addEventListener("click",function (){
-        if(e.id=="record-topic")
-        {
-          record.classList.add("current");
-          online.classList.remove("current");
-          status.classList.remove("current");
-          recordTopic.classList.add("current");
-          onlineTopic.classList.remove("current");
-          statusTopic.classList.remove("current");
+  topic.forEach((e)=>{
+    e.addEventListener("click",function (){
+      if(e.id=="record-topic")
+      {
+        record.classList.add("current");
+        online.classList.remove("current");
+        status.classList.remove("current");
+        recordTopic.classList.add("current");
+        onlineTopic.classList.remove("current");
+        statusTopic.classList.remove("current");
 
-        }else if(e.id=="online-topic")
-        {
-          record.classList.remove("current");
-          online.classList.add("current");
-          status.classList.remove("current");
-          recordTopic.classList.remove("current");
-          onlineTopic.classList.add("current");
-          statusTopic.classList.remove("current");
-        }else if(e.id=="status-topic")
-        {
-          record.classList.remove("current");
-          online.classList.remove("current");
-          status.classList.add("current");
-          recordTopic.classList.remove("current");
-          onlineTopic.classList.remove("current");
-          statusTopic.classList.add("current");
-        }
-      })
-    });
+      }else if(e.id=="online-topic")
+      {
+        record.classList.remove("current");
+        online.classList.add("current");
+        status.classList.remove("current");
+        recordTopic.classList.remove("current");
+        onlineTopic.classList.add("current");
+        statusTopic.classList.remove("current");
+      }else if(e.id=="status-topic")
+      {
+        record.classList.remove("current");
+        online.classList.remove("current");
+        status.classList.add("current");
+        recordTopic.classList.remove("current");
+        onlineTopic.classList.remove("current");
+        statusTopic.classList.add("current");
+      }
+    })
+  });
 
   
 

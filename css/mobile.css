@@ -32,9 +32,9 @@ body {
   display: none;
   min-width: 230px;
 }
-#record.label,
-#online.label,
-#status.label {
+#record .label,
+#online .label,
+#status .label {
   display: none;
 }
 .current {

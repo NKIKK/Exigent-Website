@@ -117,6 +117,9 @@ nav {
   align-items: center;
   gap: 5px;
 }
+.player img {
+  cursor: pointer;
+}
 .play-button {
   width: 25px;
   height: 25px;
@@ -280,4 +283,12 @@ nav {
 #listPeople .listPeopleItem label:hover:before {
   content: "";
   background-color: rgba(0, 0, 0, 0.1);
+}
+.msg {
+  font-size: 0.8em;
+  /* align-self: flex-start; */
+  /* margin-left: 2em; */
+}
+.error {
+  color: var(--red-light);
 }
