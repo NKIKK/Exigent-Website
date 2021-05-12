@@ -52,6 +52,7 @@ nav {
   width: 30px;
   height: 30px;
   fill: white;
+  margin: 5px;
 }
 #microphone {
   width: 70px;
@@ -157,6 +158,12 @@ nav {
 #status {
   display: flex;
   flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+#status-table {
+  display: flex;
+  flex-direction: column-reverse;
   justify-items: center;
   align-items: center;
 }

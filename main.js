@@ -32,8 +32,15 @@ const UIController = (function () {
     textMicrophone: "#text-microphone",
     listPeopleItem: ".listPeopleItem",
     playButton: ".play-button",
+    statusTable: "#status-table"
+    
+  };
+  const UIPath={
     pauseSvg: "/resource/pause.svg",
-    playSvg: "/resource/play-button.svg", 
+    playSvg: "/resource/play-button.svg",
+    accept: "resource/check-mark.svg",
+    waiting:"resource/time-left.svg",
+    reject: "resource/cancel.svg"
   };
   
   const mic = document.querySelector(UISelector.microphone);
@@ -97,13 +104,13 @@ const UIController = (function () {
   function playSound(e)
   {
     e.classList.add("pause");
-    e.src=UISelector.pauseSvg;
+    e.src=UIPath.pauseSvg;
     e.nextElementSibling.play()
   }
   function pauseSound(e)
   {
     e.classList.remove("pause");
-    e.src=UISelector.playSvg;
+    e.src=UIPath.playSvg;
     e.nextElementSibling.pause();
     
   }
@@ -117,7 +124,33 @@ const UIController = (function () {
     });
   }
 
+  // Add row
+  const statusTable=document.querySelector(UISelector.statusTable);
 
+  // Add status row
+  function addStatus(targetName,targetFileName,sendTime,sendDate,sendResponse,backResponse)
+  {
+    let row = document.createElement("div");
+    row.className='item-status';
+    let target=document.createElement("div");
+    target.className="target";
+    target.innerHTML=`<div class="target-name">${targetName}</div>
+                      <div class="target-filename">[${targetFileName}]</div>`;
+    row.appendChild(target);
+    let send=document.createElement("div");
+    send.className="send";
+    send.innerHTML=`<img class="send-icon icon" src=${UIPath[sendResponse]}></img>
+                    <div class="send-time">
+                    <div class="send-hour">${sendTime}</div>
+                    <div class="send-date">${sendDate}</div>
+                    </div>`;
+    row.appendChild(send);
+    let back_response=document.createElement("div");
+    back_response.className="response";
+    back_response.innerHTML=`<img class="response-icon icon" src=${UIPath[backResponse]}></img>`;
+    row.appendChild(back_response);
+    statusTable.appendChild(row);
+  }
 
   function resetState(){
     idle();
@@ -133,7 +166,8 @@ const UIController = (function () {
     setMsgErrorTime,
     playSound,
     pauseSound,
-    pauseAll
+    pauseAll,
+    addStatus
   };
 })();
 
