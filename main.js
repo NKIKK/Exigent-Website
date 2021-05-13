@@ -32,7 +32,8 @@ const UIController = (function () {
     textMicrophone: "#text-microphone",
     listPeopleItem: ".listPeopleItem",
     playButton: ".play-button",
-    statusTable: "#status-table"
+    statusTable: "#status-table",
+    recordList: "#recorded-list"
     
   };
   const UIPath={
@@ -126,7 +127,7 @@ const UIController = (function () {
 
   // Add row
   const statusTable=document.querySelector(UISelector.statusTable);
-
+  const recordList=document.querySelector(UISelector.recordList);
   // Add status row
   function addStatus(targetName,targetFileName,sendTime,sendDate,sendResponse,backResponse)
   {
@@ -151,6 +152,18 @@ const UIController = (function () {
     row.appendChild(back_response);
     statusTable.appendChild(row);
   }
+  // Add record row
+  function addRecord(srcFile,nameFile){
+    let row=document.createElement("div");
+    row.className="recorded";
+    row.innerHTML=`<div class="player">
+                  <img src="/resource/play-button.svg" alt="" class="icon play-button">
+                  <audio src=${srcFile}></audio>
+                  <div class="name-recorded">${nameFile}</div>
+                  </div>
+                  <button class="btn-primary modalSendBtn modalBtn">Send</button>`;
+    recordList.appendChild(row);
+  }
 
   function resetState(){
     idle();
@@ -167,7 +180,8 @@ const UIController = (function () {
     playSound,
     pauseSound,
     pauseAll,
-    addStatus
+    addStatus,
+    addRecord
   };
 })();
 
