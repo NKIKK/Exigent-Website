@@ -33,7 +33,9 @@ const UIController = (function () {
     listPeopleItem: ".listPeopleItem",
     playButton: ".play-button",
     statusTable: "#status-table",
-    recordList: "#recorded-list"
+    recordList: "#recorded-list",
+    popupName: "#popupName",
+    popupSend: "#popupSend"
     
   };
   const UIPath={
@@ -57,6 +59,8 @@ const UIController = (function () {
       }else if(colorVariable.convertRGBtoHex(mic.style.backgroundColor) ===
       colorVariable.redLight)
       {
+        // update src file of modal
+        updateModalNameFile("/somewhere/test.mp3");
         openModal("modalName");
         return;
       }
@@ -165,6 +169,23 @@ const UIController = (function () {
     recordList.appendChild(row);
   }
 
+
+  // Create
+  const popupName=document.querySelector(UISelector.popupName);
+  const popupSend=document.querySelector(UISelector.popupSend);
+
+  // Update src file modal name
+  function updateModalNameFile(srcFile){
+    popupName.querySelector("audio").src=srcFile;
+  }
+
+  // Update src file and name modal send
+  function updateModalSend(srcFile,nameFile)
+  {
+    popupSend.querySelector("audio").src=srcFile;
+    popupSend.querySelector(".name-recorded").innerHTML=nameFile;
+  }
+
   function resetState(){
     idle();
     unchecked();
@@ -181,7 +202,9 @@ const UIController = (function () {
     pauseSound,
     pauseAll,
     addStatus,
-    addRecord
+    addRecord,
+    updateModalNameFile,
+    updateModalSend
   };
 })();
 
@@ -191,6 +214,7 @@ const BtnController = (function () {
     e.addEventListener("click", function () {
       if (e.classList.contains("modalSendBtn")) {
         UIController.pauseAll();
+        UIController.updateModalSend("/somewhere/test.mp3","updateName");
         UIController.openModal("modalSend");
       } else if (e.classList.contains("modalName")) {
         UIController.pauseAll();
