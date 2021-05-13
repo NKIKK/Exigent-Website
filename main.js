@@ -165,7 +165,7 @@ const UIController = (function () {
                   <audio src=${srcFile}></audio>
                   <div class="name-recorded">${nameFile}</div>
                   </div>
-                  <button class="btn-primary modalSendBtn modalBtn">Send</button>`;
+                  <button class="btn-primary modalSendBtn modalBtn button">Send</button>`;
     recordList.appendChild(row);
   }
 
@@ -186,6 +186,19 @@ const UIController = (function () {
     popupSend.querySelector(".name-recorded").innerHTML=nameFile;
   }
 
+  // update icon response Status
+  function updateIconSendStatus(row,newStatus)
+  {
+    // newStatus = accept | reject | waiting
+    // row is div class item-status
+    row.querySelector(".send-icon").src=UIPath[newStatus];
+  }
+  function updateIconResponseStatus(row,newStatus)
+  {
+    // row is div class item-status
+    row.querySelector(".response-icon").src=UIPath[newStatus];
+  }
+
   function resetState(){
     idle();
     unchecked();
@@ -204,7 +217,9 @@ const UIController = (function () {
     addStatus,
     addRecord,
     updateModalNameFile,
-    updateModalSend
+    updateModalSend,
+    updateIconSendStatus,
+    updateIconResponseStatus
   };
 })();
 

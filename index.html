@@ -45,7 +45,7 @@
               <audio src="/resource/sound/ThinkingAboutTheUniverse-NatKeefe&BeatMower.mp3"></audio>
               <div class="name-recorded">Name</div>
             </div>
-            <button class="btn-primary modalSendBtn modalBtn">Send</button>
+            <button class="btn-primary modalSendBtn modalBtn  button">Send</button>
           </div>
           <div class="recorded">
             <div class="player">
@@ -53,7 +53,7 @@
               <audio src="/resource/sound/HomefortheHolidays-ChrisHaugen.mp3"></audio>
               <div class="name-recorded">Name</div>
             </div>
-            <button class="btn-primary modalSendBtn modalBtn">Send</button>
+            <button class="btn-primary modalSendBtn modalBtn button">Send</button>
           </div>
           <div class="recorded">
             <div class="player">
@@ -61,7 +61,7 @@
               <audio src="/resource/sound/ChordsofHarmony-AakashGandhi.mp3"></audio>
               <div class="name-recorded">Name</div>
             </div>
-            <button class="btn-primary modalSendBtn modalBtn" >Send</button>
+            <button class="btn-primary modalSendBtn modalBtn button" >Send</button>
           </div>
           
         </div>
@@ -177,56 +177,59 @@
         <input class="name-recorded" type="text" placeholder="Name" maxlength="14" name="recondName" id="recordName"></input>
       </div>
       <div class="buttons">
-        <button class="btn-red closeBtn modalBtn">Cancel</button>
-        <button class="modalBtn modalSendBtn">OK</button>
+        <button class="btn-red closeBtn modalBtn  button">Cancel</button>
+        <button class="modalBtn modalSendBtn  button">OK</button>
       </div>
     </div>
   </div>
 
   <div class="modal" id="popupSend">
+    <form action="#">
     <div  class="popup">
-      <div class="label">
-        Send to..
-      </div>
-      <div class="player">
-        <img src="/resource/play-button.svg" alt="" class="icon play-button">
-        <audio src="/resource/sound/ChordsofHarmony-AakashGandhi.mp3"></audio>
-        <div class="name-recorded">Name</div>
-      </div>
-      <div id="listPeople">
-        <div class="listPeopleItem">
-          <input type="checkbox" name="p1" id="p1">
-          <label for="p1">Lelouch vi Britannaia</label>
-        </div>
-        <div class="listPeopleItem">
-          <input type="checkbox" name="p2" id="p2">
-          <label for="p2">คริสทีน่า</label>
-        </div>
-        <div class="listPeopleItem">
-          <input type="checkbox" name="p3" id="p3">
-          <label for="p3">นิสิต1</label>
-        </div>
-        <div class="listPeopleItem">
-          <input type="checkbox" name="p4" id="p4">
-          <label for="p4">นิสิต2</label>
-        </div>
-      </div>
-      <div id="inputTime">
-        <label for="time">Time</label>
-        <input type="time" id="time" name="time" step="300">
-      </div>
-      <div id="inputDate">
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date">
-      </div>
-      <div id="error-time" class="msg">--- Please pick Time&Date vaild ---</div>
-      <div class="buttons">
-        <button class="btn-red closeBtn modalBtn">Cancel</button>
-        <button class="sendBtn saveBtn">Save & Send</button>
-        <button class="btn-blue sendBtn">Send</button>
-      </div>
-    </div>
 
-  </div>
-</body>
+        <div class="label">
+          Send to..
+        </div>
+        <div class="player">
+          <img src="/resource/play-button.svg" alt="" class="icon play-button">
+          <audio src="/resource/sound/ChordsofHarmony-AakashGandhi.mp3"></audio>
+          <div class="name-recorded">Name</div>
+        </div>
+        <div id="listPeople">
+          <div class="listPeopleItem">
+            <input type="checkbox" name="p1" id="p1">
+            <label for="p1">Lelouch vi Britannaia</label>
+          </div>
+          <div class="listPeopleItem">
+            <input type="checkbox" name="p2" id="p2">
+            <label for="p2">คริสทีน่า</label>
+          </div>
+          <div class="listPeopleItem">
+            <input type="checkbox" name="p3" id="p3">
+            <label for="p3">นิสิต1</label>
+          </div>
+          <div class="listPeopleItem">
+            <input type="checkbox" name="p4" id="p4">
+            <label for="p4">นิสิต2</label>
+          </div>
+        </div>
+        <div id="inputTime">
+          <label for="time">Time</label>
+          <input type="time" id="time" name="time" step="300">
+        </div>
+        <div id="inputDate">
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date">
+        </div>
+        <div id="error-time" class="msg">--- Please pick Time&Date vaild ---</div>
+        <div class="buttons">
+          <button class="btn-red closeBtn modalBtn button">Cancel</button>
+          <input type="submit" value="Save & Send" class="sendBtn saveBtn button"></input>
+          <input type="submit" class="btn-blue sendBtn button" value="Send"></input>
+        </div>
+      </div>
+    </form>
+      
+    </div>
+  </body>
 </html>
