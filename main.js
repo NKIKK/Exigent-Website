@@ -20,7 +20,7 @@ const colorVariable = {
       : orig;
   },
 };
-
+// document.querySelector("#date").setAttribute("min",new Date());
 const UIController = (function () {
   const UISelector = {
     microphone: "#microphone",
@@ -101,7 +101,7 @@ const UIController = (function () {
   }
   function setMsgErrorTime()
   {
-    msg.innerHTML="--- Invalid Time&Data ---";
+    msg.innerHTML="--- Invalid Time&Date ---";
     msg.classList.add("error");
   }
 
@@ -320,9 +320,6 @@ const BtnController = (function () {
       }
     })
   });
-
-  
-
 
 })();
 

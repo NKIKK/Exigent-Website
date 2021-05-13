@@ -184,7 +184,7 @@
   </div>
 
   <div class="modal" id="popupSend">
-    <form action="#">
+    <form action="#" id="form-send">
     <div  class="popup">
 
         <div class="label">
@@ -224,8 +224,8 @@
         <div id="error-time" class="msg">--- Please pick Time&Date vaild ---</div>
         <div class="buttons">
           <button class="btn-red closeBtn modalBtn button">Cancel</button>
-          <input type="submit" value="Save & Send" class="sendBtn saveBtn button"></input>
-          <input type="submit" class="btn-blue sendBtn button" value="Send"></input>
+          <input type="submit" value="Save & Send" class="sendBtn saveBtn button" ></input>
+          <input type="submit" class="btn-blue sendBtn button" value="Send" onclick=`ValidityController.isValidTime(document.form-send.date);return false;`></input>
         </div>
       </div>
     </form>
