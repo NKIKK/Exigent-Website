@@ -13,13 +13,14 @@ const colorVariable = {
   convertRGBtoHex: function rgb2hex(orig) {
     var rgb = orig.replace(/\s/g, "").match(/^rgba?\((\d+),(\d+),(\d+)/i);
     return rgb && rgb.length === 4
-      ? "#" +
-          ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +
-          ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2) +
-          ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2)
-      : orig;
+    ? "#" +
+    ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+    ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+    ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2)
+    : orig;
   },
 };
+let AudioSrc;
 // document.querySelector("#date").setAttribute("min",new Date());
 const UIController = (function () {
   const UISelector = {
@@ -46,6 +47,7 @@ const UIController = (function () {
     reject: "resource/cancel.svg"
   };
   
+  // Record from microphone
   const mic = document.querySelector(UISelector.microphone);
   const textMicrophone = document.querySelector(UISelector.textMicrophone);
 
@@ -59,8 +61,6 @@ const UIController = (function () {
       }else if(colorVariable.convertRGBtoHex(mic.style.backgroundColor) ===
       colorVariable.redLight)
       {
-        // update src file of modal
-        updateModalNameFile("/somewhere/test.mp3");
         openModal("modalName");
         return;
       }
@@ -72,8 +72,37 @@ const UIController = (function () {
       textMicrophone.innerHTML = "Click the button<br>to start a new record";
   }
   function recording(){
+      
+    navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(stream => {
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+
+    const audioChunks = [];
+    mediaRecorder.addEventListener("dataavailable", event => {
+      audioChunks.push(event.data);
+    });
+
+    mediaRecorder.addEventListener("stop", () => {
+      const audioBlob = new Blob(audioChunks);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      // audio.play();
+      updateModalNameFile(audioUrl);
+      AudioSrc=audioUrl;
+      openModal("modalName");
+      console.log(new Audio(audioUrl));
+    });
+
+    setTimeout(() => {
+      mediaRecorder.stop();
+    }, 5000);
+  });
+
+
+
       mic.style.backgroundColor = colorVariable.redLight;
-      textMicrophone.innerHTML = "Recording\.\.\.<br>click again to finish";
+      textMicrophone.innerHTML = "Recording\.\.\.<br>only 5 seconds";
       
   }
   function openModal(modalReference) {
@@ -229,8 +258,16 @@ const BtnController = (function () {
     e.addEventListener("click", function () {
       if (e.classList.contains("modalSendBtn")) {
         UIController.pauseAll();
-        UIController.updateModalSend("/somewhere/test.mp3","updateName");
+        if(e.innerHTML=="Send")
+        {
+          // from database
+          UIController.updateModalSend("/somewhere/test.mp3","updateName");
+        }else {
+          // from user
+          UIController.updateModalSend(AudioSrc,document.querySelector("#recordName").value);
+        }
         UIController.openModal("modalSend");
+        
       } else if (e.classList.contains("modalName")) {
         UIController.pauseAll();
         UIController.openModal("modalName");
