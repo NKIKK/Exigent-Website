@@ -280,10 +280,8 @@ const BtnController = (function () {
   const sendBtn = document.querySelectorAll(".sendBtn");
   sendBtn.forEach(function (btn) {
     btn.addEventListener("click", function () {
-      const t = document.querySelector("#time").value;
-      const d = document.querySelector("#date").value;
-
-      if (!ValidityController.isValidTime(`${t} ${d}`)) {
+      
+      if (!ValidityController.isValidTime()) {
         // Error
         UIController.setMsgErrorTime();
         return;
@@ -316,6 +314,13 @@ const BtnController = (function () {
     });
   });
 
+  const audioAll = document.querySelectorAll("audio");
+  audioAll.forEach((e)=>{
+    e.addEventListener("ended",function(){
+      console.log("ended");
+      UIController.pauseSound(e.previousElementSibling);
+    });
+  });
 
 
   const topic = document.querySelectorAll(".topic");
@@ -363,13 +368,15 @@ const BtnController = (function () {
 
 
 const ValidityController = (function () {
-  function isValidTime(time) {
-    const inputTime = new Date(time);
-
+  function isValidTime() {
+    const t = document.querySelector("#time").value;
+    const d = document.querySelector("#date").value;
+    const inputTime = new Date(`${t} ${d}`);
+  
     return inputTime > Date.now();
   }
+  
   return {
     isValidTime,
   };
 })();
-
