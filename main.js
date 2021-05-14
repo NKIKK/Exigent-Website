@@ -40,8 +40,8 @@ const UIController = (function () {
     
   };
   const UIPath={
-    pauseSvg: "/resource/pause.svg",
-    playSvg: "/resource/play-button.svg",
+    pauseSvg: "resource/pause.svg",
+    playSvg: "resource/play-button.svg",
     accept: "resource/check-mark.svg",
     waiting:"resource/time-left.svg",
     reject: "resource/cancel.svg"
@@ -75,27 +75,27 @@ const UIController = (function () {
       
     navigator.mediaDevices.getUserMedia({ audio: true })
   .then(stream => {
-    const mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.start();
-
-    const audioChunks = [];
-    mediaRecorder.addEventListener("dataavailable", event => {
-      audioChunks.push(event.data);
-    });
-
-    mediaRecorder.addEventListener("stop", () => {
-      const audioBlob = new Blob(audioChunks);
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    var audioContext = new AudioContext;
+    const input = audioContext.createMediaStreamSource(stream);
+    const rec = new Recorder(input, {
+        numChannels: 1
+    }) 
+    rec.record()
+    function blobCallBack(audioBlob) {
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
-      // audio.play();
+      // do something with audio
+      //audio.play();
       updateModalNameFile(audioUrl);
       AudioSrc=audioUrl;
       openModal("modalName");
       console.log(new Audio(audioUrl));
-    });
+    }
 
     setTimeout(() => {
-      mediaRecorder.stop();
+      rec.stop();
+      rec.exportWAV(blobCallBack)
     }, 5000);
   });
 
