@@ -8,8 +8,18 @@ async function uploadAudio(name,audioBlob) {
     return res.data
 }
 
-function getAudio(id) {
+function getAudioFile(id) {
     return new Audio(url+'audios/'+id+'/file');
+}
+
+async function getAudio(id) {
+    const res = await axios.get(url+'audios/'+id)
+    return res.data;
+}
+
+async function getAudios() {
+    const res = await axios.get(url+'audios')
+    return res.data;
 }
 
 async function deleteAudio(id) {
