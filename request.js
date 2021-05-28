@@ -12,6 +12,11 @@ function getAudioFile(id) {
     return new Audio(url+'audios/'+id+'/file');
 }
 
+function getUrlAudioById(id)
+{
+    return url+'audios/'+id+'/file';
+}
+
 async function getAudio(id) {
     const res = await axios.get(url+'audios/'+id)
     return res.data;

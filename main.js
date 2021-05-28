@@ -20,7 +20,27 @@ const colorVariable = {
     : orig;
   },
 };
+let audioID,audioBlobNow,isNewRecord,NameRecord="Empty";
 let AudioSrc;
+
+function getNameRecord()
+{
+  return NameRecord;
+}
+function setNameRecord(name)
+{
+  NameRecord=name;
+}
+function getAudioID()
+{
+  return audioID;
+}
+function setAudioID(id)
+{
+  audioID=id;
+}
+
+
 // document.querySelector("#date").setAttribute("min",new Date());
 const UIController = (function () {
   const UISelector = {
@@ -36,7 +56,9 @@ const UIController = (function () {
     statusTable: "#status-table",
     recordList: "#recorded-list",
     popupName: "#popupName",
-    popupSend: "#popupSend"
+    popupSend: "#popupSend",
+    onlineList: "#online-list",
+    listPeople: "#listPeople"
     
   };
   const UIPath={
@@ -83,14 +105,15 @@ const UIController = (function () {
     }) 
     rec.record()
     function blobCallBack(audioBlob) {
+      audioBlobNow=audioBlob;
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
       // do something with audio
       //audio.play();
-      updateModalNameFile(audioUrl);
+      updateModalSrcFile(audioUrl);
       AudioSrc=audioUrl;
       openModal("modalName");
-      console.log(new Audio(audioUrl));
+      console.log(audioBlob);
     }
 
     setTimeout(() => {
@@ -133,6 +156,11 @@ const UIController = (function () {
     msg.innerHTML="--- Invalid Time&Date ---";
     msg.classList.add("error");
   }
+  function setMsgErrorEmptySelect()
+  {
+    msg.innerHTML="--- Empty Device to send ---";
+    msg.classList.add("error");
+  }
 
   // Play Pause
   function playSound(e)
@@ -159,10 +187,12 @@ const UIController = (function () {
   }
 
   // Add row
-  const statusTable=document.querySelector(UISelector.statusTable);
-  const recordList=document.querySelector(UISelector.recordList);
+  let statusTable=document.querySelector(UISelector.statusTable);
+  let recordList=document.querySelector(UISelector.recordList);
+  let onlineList = document.querySelector(UISelector.onlineList);
+  let listPeople = document.querySelector(UISelector.listPeople);
   // Add status row
-  function addStatus(targetName,targetFileName,sendTime,sendDate,sendResponse,backResponse)
+  function addStatus(targetName,targetFileName,sendTime,sendDate,/*sendResponse,*/backResponse)
   {
     let row = document.createElement("div");
     row.className='item-status';
@@ -173,7 +203,8 @@ const UIController = (function () {
     row.appendChild(target);
     let send=document.createElement("div");
     send.className="send";
-    send.innerHTML=`<img class="send-icon icon" src=${UIPath[sendResponse]}></img>
+    // <img class="send-icon icon" src=${UIPath[sendResponse]}></img>
+    send.innerHTML=`
                     <div class="send-time">
                     <div class="send-hour">${sendTime}</div>
                     <div class="send-date">${sendDate}</div>
@@ -186,17 +217,163 @@ const UIController = (function () {
     statusTable.appendChild(row);
   }
   // Add record row
-  function addRecord(srcFile,nameFile){
+  function addRecord(srcFile,nameFile,idFile){
     let row=document.createElement("div");
     row.className="recorded";
-    row.innerHTML=`<div class="player">
-                  <img src="/resource/play-button.svg" alt="" class="icon play-button">
-                  <audio src=${srcFile}></audio>
-                  <div class="name-recorded">${nameFile}</div>
-                  </div>
-                  <button class="btn-primary modalSendBtn modalBtn button">Send</button>`;
+      let player = document.createElement("div");
+      player.className="player";
+        let imgPlay = document.createElement("img");
+        imgPlay.src = "resource/play-button.svg";
+        imgPlay.className= "icon play-button";
+        BtnController.addEventListenerPlayBtn(imgPlay);
+    
+        let audioTag = document.createElement("audio");
+        audioTag.src=srcFile;
+        audioTag.id=idFile;
+        BtnController.addEventListenerAudio(audioTag);
+      
+        let nameRecord = document.createElement("div");
+        nameRecord.className = "name-recorded";
+        nameRecord.innerHTML=nameFile;
+
+      player.appendChild(imgPlay);
+      player.appendChild(audioTag);
+      player.appendChild(nameRecord);
+
+      let btnEvent = document.createElement("button");
+      btnEvent.className="btn-primary modalSendBtn modalBtn  button";
+      btnEvent.innerHTML="Send";
+      BtnController.addEventListenerModalBtn(btnEvent);
+      BtnController.addEventListenerSendBtn(btnEvent);
+
+    row.appendChild(player);
+    row.appendChild(btnEvent);
+    
+
     recordList.appendChild(row);
   }
+
+  // Add person
+  function addPerson(name)
+  {
+    let row=document.createElement("div");
+    row.className="online-row";
+    row.innerHTML=`<div class="online-icon offline-color"></div>
+                  <div class="online-name">${name}</div>`;
+    onlineList.appendChild(row);
+  }
+  function addListPeopleToSelect(name,idDevice)
+  {
+    let row=document.createElement("div");
+    row.className="listPeopleItem";
+      let chkBox=document.createElement("input");
+      chkBox.type="checkbox";
+      chkBox.id=idDevice;
+      chkBox.name=idDevice;
+
+      let label = document.createElement("label");
+      label.htmlFor=idDevice;
+      label.innerHTML=name;
+
+      row.appendChild(chkBox);
+      row.appendChild(label);
+
+    listPeople.appendChild(row);
+  }
+  
+  function genAudios()
+  {
+    recordList.innerHTML="";
+    getAudios().then(response =>
+      {
+        response.data.forEach(e =>
+          {
+            addRecord(getUrlAudioById(e["id"]),e["name"],e["id"]);
+          })
+          
+      });
+        
+  }
+  function genSchedules()
+  {
+    statusTable.innerHTML="";
+    getSchedules().then(response =>{
+  
+      response.data.forEach(schedule => {
+        let scheduleID = schedule["id"];
+        let nameFile = schedule["name"];
+        let timeSend = new Date(schedule["time"]);
+        let receivers = schedule["receivers"];
+        let idAudio = schedule["audio"];
+        let time = timeSend.getHours() + ":"+timeSend.getMinutes();
+        let m=timeSend.getMonth()+1;
+        let date = timeSend.getDate()+"/"+ m + "/"+ timeSend.getFullYear()%100;
+  
+        getScheduleResponse(scheduleID).then(responseTargets =>{
+  
+          responseTargets.data.forEach(target => {
+            let targetID = target["receiver_id"];
+            let finished = target["finished"];
+  
+            getDevice(targetID).then(infoDevice =>{
+              let targetName = infoDevice.data["name"];
+  
+              if(finished)
+              {
+                addStatus(targetName,nameFile,time,date,"accept");
+              }else {
+                addStatus(targetName,nameFile,time,date,"reject");
+              }
+  
+            });
+          })
+  
+  
+        });
+  
+  
+      });
+  
+    });
+
+  }
+
+  function genDevices()
+  {
+    onlineList.innerHTML="";
+    listPeople.innerHTML="";
+    getDevices().then(people =>{
+  
+      people.data.forEach(e =>{
+        addPerson(e["name"]);
+        addListPeopleToSelect(e["name"],e["id"]);
+  
+      })
+  
+    });
+
+  }
+
+  function setupAll()
+  {
+    // All record
+    genAudios();
+
+    // All status
+    genSchedules();
+
+    // All People
+    genDevices();
+  
+  }
+
+
+
+
+
+
+
+
 
 
   // Create
@@ -204,7 +381,7 @@ const UIController = (function () {
   const popupSend=document.querySelector(UISelector.popupSend);
 
   // Update src file modal name
-  function updateModalNameFile(srcFile){
+  function updateModalSrcFile(srcFile){
     popupName.querySelector("audio").src=srcFile;
   }
 
@@ -245,40 +422,71 @@ const UIController = (function () {
     pauseAll,
     addStatus,
     addRecord,
-    updateModalNameFile,
+    updateModalSrcFile,
     updateModalSend,
     updateIconSendStatus,
-    updateIconResponseStatus
+    updateIconResponseStatus,
+    setupAll,
+    addPerson,
+    addListPeopleToSelect,
+    setMsgErrorEmptySelect,
+    genAudios,
+    genDevices,
+    genSchedules
   };
 })();
 
 const BtnController = (function () {
-  const modalBtn = document.querySelectorAll(".modalBtn");
-  modalBtn.forEach((e) => {
-    e.addEventListener("click", function () {
-      if (e.classList.contains("modalSendBtn")) {
+
+  function addEventListenerModalBtn(btn)
+  {
+    btn.addEventListener("click", function () {
+      if (btn.classList.contains("modalSendBtn")) {
         UIController.pauseAll();
-        if(e.innerHTML=="Send")
+        if(btn.innerHTML=="Send")
         {
           // from database
-          UIController.updateModalSend("/somewhere/test.mp3","updateName");
+          setNameRecord(btn.previousElementSibling.querySelector(".name-recorded").innerHTML);
+          setAudioID(btn.previousElementSibling.querySelector("audio").id);
+          UIController.updateModalSend(btn.previousElementSibling.querySelector("audio").src,
+                                      getNameRecord());
         }else {
           // from user
-          UIController.updateModalSend(AudioSrc,document.querySelector("#recordName").value);
+          setNameRecord(document.querySelector("#recordName").value);
+          uploadAudio(getNameRecord(),audioBlobNow).then(response => {
+            
+            setAudioID(response.data["id"]);
+            UIController.genAudios();
+
+          });
+          UIController.updateModalSend(AudioSrc,getNameRecord());
+
         }
+        // if(btn.classList.contains("nameOK"))
+        // {
+        //    uploadAudio(getNameRecord(),audioBlobNow).then(response => {
+        //       setAudioID(response.data["id"]);
+        //    });
+        // }else {
+        //   ////////////////////////////////////
+        //   // set audioID when click from recorded list
+        //   //////////////////////////////////////
+
+        // }
         UIController.openModal("modalSend");
         
-      } else if (e.classList.contains("modalName")) {
+      } else if (btn.classList.contains("modalName")) {
         UIController.pauseAll();
+        isNewRecord=true;
         UIController.openModal("modalName");
-      } else if (e.classList.contains("closeBtn")) {
+      } else if (btn.classList.contains("closeBtn")) {
+        isNewRecord=false;
         UIController.closeModals();
       }
     });
-  });
-
-  const sendBtn = document.querySelectorAll(".sendBtn");
-  sendBtn.forEach(function (btn) {
+  }
+  function addEventListenerSendBtn(btn)
+  {
     btn.addEventListener("click", function () {
       
       if (!ValidityController.isValidTime()) {
@@ -286,9 +494,68 @@ const BtnController = (function () {
         UIController.setMsgErrorTime();
         return;
       }
-      UIController.closeModals();
       // Send Response
+      
+      // Create Schedule /////////
+      ////////////////////////////
+      let targets=[];
+      let listPeople=document.querySelector("#listPeople").childNodes;
+      listPeople.forEach( e =>{
+        let chk=e.firstChild;
+        if(chk.checked)
+        {
+          targets.push(chk.id);
+        }
+      })
+      if(targets.length==0)
+      {
+        UIController.setMsgErrorEmptySelect();
+        return;
+      }
+      const t = document.querySelector("#time").value;
+      const d = document.querySelector("#date").value;
+      const inputTime = new Date(`${t} ${d}`);
+      
+      createSchedule(getNameRecord(),inputTime,targets,getAudioID()).then(response =>{
+        UIController.genSchedules();
+        alert("Sent Successfully");
+      });
+      
+      UIController.closeModals();
     });
+
+  }
+  function addEventListenerPlayBtn(btn)
+  {
+    btn.addEventListener("click",function (){
+      if(btn.classList.contains("pause")===false)
+      {
+        UIController.playSound(btn);
+        UIController.pauseAll(btn);
+      }else {
+        UIController.pauseSound(btn);
+      }
+  
+    });
+    
+  }
+  function addEventListenerAudio(btn)
+  {
+    btn.addEventListener("ended",function(){
+      console.log("ended");
+      UIController.pauseSound(btn.previousElementSibling);
+    });
+
+  }
+
+  const modalBtn = document.querySelectorAll(".modalBtn");
+  modalBtn.forEach((e) => {
+    addEventListenerModalBtn(e);
+  });
+
+  const sendBtn = document.querySelectorAll(".sendBtn");
+  sendBtn.forEach(function (btn) {
+    addEventListenerSendBtn(btn);
   });
 
   const microphone = document.querySelector("#microphone");
@@ -302,24 +569,12 @@ const BtnController = (function () {
   // play record
   const playButtons = document.querySelectorAll(".play-button");
   playButtons.forEach((e) => {
-    e.addEventListener("click",function (){
-      if(e.classList.contains("pause")===false)
-      {
-        UIController.playSound(e);
-        UIController.pauseAll(e);
-      }else {
-        UIController.pauseSound(e);
-      }
-
-    });
+    addEventListenerPlayBtn(e);
   });
 
   const audioAll = document.querySelectorAll("audio");
   audioAll.forEach((e)=>{
-    e.addEventListener("ended",function(){
-      console.log("ended");
-      UIController.pauseSound(e.previousElementSibling);
-    });
+    addEventListenerAudio(e);
   });
 
 
@@ -363,6 +618,14 @@ const BtnController = (function () {
     })
   });
 
+
+  return {
+    addEventListenerModalBtn,
+    addEventListenerPlayBtn,
+    addEventListenerSendBtn,
+    addEventListenerAudio
+  };
+
 })();
 
 
@@ -380,3 +643,6 @@ const ValidityController = (function () {
     isValidTime,
   };
 })();
+
+
+UIController.setupAll(); 
