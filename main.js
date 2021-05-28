@@ -305,9 +305,10 @@ const UIController = (function () {
         let timeSend = new Date(schedule["time"]);
         let receivers = schedule["receivers"];
         let idAudio = schedule["audio"];
-        let time = timeSend.getHours() + ":"+timeSend.getMinutes();
+        const zeroPad = (num, places) => String(num).padStart(places, '0')
+        let time = timeSend.getHours() + ":"+zeroPad(timeSend.getMinutes(),2);
         let m=timeSend.getMonth()+1;
-        let date = timeSend.getDate()+"/"+ m + "/"+ timeSend.getFullYear()%100;
+        let date = zeroPad(timeSend.getDate(),2)+"/"+ zeroPad(m,2) + "/"+ zeroPad(timeSend.getFullYear()%100,2);
   
         getScheduleResponse(scheduleID).then(responseTargets =>{
   
