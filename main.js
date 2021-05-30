@@ -254,12 +254,22 @@ const UIController = (function () {
   }
 
   // Add person
-  function addPerson(name)
+  function addPerson(name,status)
   {
     let row=document.createElement("div");
     row.className="online-row";
-    row.innerHTML=`<div class="online-icon offline-color"></div>
-                  <div class="online-name">${name}</div>`;
+    let icon = document.createElement("div");
+    icon.className = "online-icon";
+    if(status==0)
+      updateOnlineStatus(icon,0);
+    else updateOnlineStatus(icon,1);
+
+    let div_name = document.createElement("div");
+    div_name.className="online-name";
+    div_name.innerHTML=name;
+    row.appendChild(icon);
+    row.appendChild(div_name);
+    
     onlineList.appendChild(row);
   }
   function addListPeopleToSelect(name,idDevice)
@@ -346,7 +356,10 @@ const UIController = (function () {
     getDevices().then(people =>{
   
       people.data.forEach(e =>{
-        addPerson(e["name"]);
+        let last_online=new Date(e["last_online"]);
+        if(new Date()-last_online<120000)
+          addPerson(e["name"],1); // online
+        else addPerson(e["name"],0);
         addListPeopleToSelect(e["name"],e["id"]);
   
       })
@@ -374,7 +387,17 @@ const UIController = (function () {
 
 
 
-
+  function updateOnlineStatus(row,status)
+  {
+    row.classList.remove("offline-color");
+    row.classList.remove("online-color");
+    // status = 0 offline
+    // status = 1 online
+    if(status==0)
+      row.classList.add("offline-color");
+    else if(status==1)
+      row.classList.add("online-color")
+  }
 
 
   // Create
@@ -433,7 +456,8 @@ const UIController = (function () {
     setMsgErrorEmptySelect,
     genAudios,
     genDevices,
-    genSchedules
+    genSchedules,
+    updateOnlineStatus
   };
 })();
 
